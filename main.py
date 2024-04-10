@@ -1,8 +1,10 @@
 from services.chat_service.chat_service import ChatService
 from uuid import UUID, uuid4
 from services.chat_service.models.message import Message
-if __name__ == "__main__":
-    service = ChatService()
+from fastapi import FastAPI
+from services.endpoints.chat_router import chat_router
 
-    service.send_message(Message(sender_id = "Hui", message_body = uuid4()))
-    print(service.get_messages())
+app = FastAPI(title="Huinya Uwu :3")
+app.include_router(chat_router, prefix='/api')
+if __name__ == "__main__":
+    print("jopa")

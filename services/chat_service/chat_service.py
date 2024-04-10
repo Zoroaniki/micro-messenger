@@ -14,5 +14,8 @@ class ChatService():
 
     def send_message(self, message: Message):
         self.chat_repo.send_message(message)
+
+    def read_message(self, message: Message):
+        self.read_message(message)
         
 

@@ -14,8 +14,8 @@ class MessageStatus(enum.Enum):
 
 @dataclass
 class Message():
-    sender_id: UUID
     message_body: str
+    sender_id: UUID
     chat_id: UUID = uuid4()
     message_status: MessageStatus = MessageStatus.SENT
     send_time: datetime = datetime.now()
