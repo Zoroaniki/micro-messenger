@@ -1,8 +1,8 @@
-from models.chat import Chat
-from models.message import Message, MessageStatus
+from services.chat_service.models.chat import Chat
+from services.chat_service.models.message import Message, MessageStatus
 from uuid import UUID
 
-messages = [Message]
+messages = []
 
 class ChatRepo():
 
@@ -21,9 +21,9 @@ class ChatRepo():
     def send_message(self, message: Message):
         messages.append(message)
 
-    def set_message_status(self, message: Message, status: Message_status):
+    def set_message_status(self, message: Message, status: MessageStatus):
         messages[messages.index(message)].message_status = status
 
-    def update_message(self, message: Message, new_text: str, media: Media = ""):
+    def update_message(self, message: Message, new_text: str):
         messages[messages.index(message)].message_body = nenw_text
 

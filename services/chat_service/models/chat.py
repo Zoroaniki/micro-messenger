@@ -1,4 +1,5 @@
 from uuid import UUID
+from services.chat_service.models.message import Message
 
 
 

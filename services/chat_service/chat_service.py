@@ -1,5 +1,6 @@
-from models import *
-from repo import ChatRepo
+from services.chat_service.models.chat import Chat
+from services.chat_service.models.message import Message
+from services.chat_service.repo.chat_repo import ChatRepo
 
 class ChatService():
     chat_repo: ChatRepo
