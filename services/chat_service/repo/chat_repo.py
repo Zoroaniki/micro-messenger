@@ -2,11 +2,25 @@ from services.chat_service.models.chat import Chat
 from services.chat_service.models.message import Message, MessageStatus
 from uuid import UUID
 
+from app.database import get_db
+from services.chat_service.models import message, chat
+from services.chat_service.db import chat_schema, messages_schema
+
+
 messages = []
+chats = []
 
 class ChatRepo():
+    db: Session
 
-    def get_all_messages(self):
+    def __init__(self):
+        self.db = next(db)
+
+    def create_chat(self, chat_name: str, partisipants: []):
+        self.db.add(Base, Chat(name=chat_name, participants=partisipants))
+        #chats.append(Chat)
+
+    def get_all_messages(self, chat_id):
         return messages
 
     def get_messages_by_text(self, text: str):

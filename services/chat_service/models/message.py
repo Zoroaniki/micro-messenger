@@ -14,6 +14,7 @@ class MessageStatus(enum.Enum):
 
 @dataclass
 class Message():
+    message_id: UUID
     message_body: str
     sender_id: UUID
     chat_id: UUID = uuid4()
