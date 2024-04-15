@@ -1,3 +1,4 @@
+import bcrypt
 from socket import create_connection
 
 
@@ -9,4 +10,9 @@ def authenticate_user(username, password):
     result = cursor.fetchone()
     cursor.close()
     connection.close()
-    return result is not None
+
+    if result is not None:
+        stored_password = result[0]
+        return bcrypt.checkpw(password.encode('utf-8'), stored_password.encode('utf-8'))
+    else:
+        return False

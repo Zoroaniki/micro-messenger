@@ -1,3 +1,7 @@
+def authenticate_user(username, password):
+    pass
+
+
 def main():
     username = input("Введите имя пользователя: ")
     password = input("Введите пароль: ")
