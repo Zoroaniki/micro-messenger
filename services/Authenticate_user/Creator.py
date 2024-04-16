@@ -1,6 +1,6 @@
 import mysql.connector
 
-def xyi():
+def create():
         # Подключение к базе данных
     db = mysql.connector.connect(
         host="localhost",
@@ -18,7 +18,7 @@ def xyi():
     CREATE TABLE IF NOT EXISTS users (
         id INT AUTO_INCREMENT PRIMARY KEY,
         name VARCHAR(255) NOT NULL,
-        email VARCHAR(255) NOT NULL UNIQUE
+        phone VARCHAR(255) NOT NULL UNIQUE
     );
     """
 
