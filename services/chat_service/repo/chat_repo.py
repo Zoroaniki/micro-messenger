@@ -1,6 +1,7 @@
 from services.chat_service.models.chat import Chat
 from services.chat_service.models.message import Message, MessageStatus
 from uuid import UUID
+from sqlalchemy import create_engine
 
 from app.database import get_db
 from services.chat_service.models import message, chat
@@ -14,6 +15,7 @@ class ChatRepo():
     db: Session
 
     def __init__(self):
+        engine = create_engine('mysql://root:icf192994lsS@localhost/chat_service_db')
         self.db = next(db)
 
     def create_chat(self, chat_name: str, partisipants: []):

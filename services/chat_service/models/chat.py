@@ -7,6 +7,6 @@ class Chat():
     id: UUID = uuid4
     name: str
     participants: list[UUID]
-    messages: list[Message] = []
+    messages: list[Message]
 
 

@@ -14,7 +14,7 @@ def read_message(id: UUID, chat_service: ChatService = Depends(ChatService)):
     try:
         chat_service.read .finish_delivery(id)
     except KeyError:
-        raise HTTPException(404, f'Ты еблан? сообщения {id} нет')
+        raise HTTPException(404, f'Error {id} нет')
     except ValueError:
         raise HTTPException(400, f'Delivery with id={id} can\'t be finished')
 @chat_router.get('/write/{message}')
