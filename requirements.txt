@@ -3,3 +3,5 @@ pydantic-settings==2.2.1
 uvicorn
 flask
 sqlalchemy
+sqlalchemy_utils
+mysql-connector-python

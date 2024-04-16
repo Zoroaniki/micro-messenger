@@ -17,5 +17,8 @@ class ChatService():
 
     def read_message(self, message: Message):
         self.read_message(message)
+
+    def create_chat(self):
+        self.create_chat("aaa", list("1"))
         
 
