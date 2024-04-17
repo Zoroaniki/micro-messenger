@@ -4,4 +4,5 @@ uvicorn
 flask
 sqlalchemy
 sqlalchemy_utils
+Flask-SQLAlchemy
 mysql-connector-python

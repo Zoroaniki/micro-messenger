@@ -1,22 +1,51 @@
 from fastapi import APIRouter, Depends, HTTPException, Body
+from flask import Blueprint, request, redirect
 from uuid import UUID, uuid4
-from services.chat_service.chat_service import ChatService
-from services.chat_service.models.message import Message
+from services.chat_service.repo.chat_repo import ChatRepo
+from services.chat_service.models.message import Message, MessageStatus
+from services.chat_service.db.messages_schema import MessageTable
+import datetime
 
-chat_router = APIRouter(prefix='/chat', tags = ['Chat'])
+urls_blueprint = Blueprint('chat', __name__,)
 
-@chat_router.get('/')
-def get_messages(chat_service: ChatService = Depends(ChatService)):
-    return chat_service.get_messages()
+chat_repo = ChatRepo()
 
-@chat_router.post('/{id}/read')
-def read_message(id: UUID, chat_service: ChatService = Depends(ChatService)):
+@urls_blueprint.route('/<id>', methods=['POST', 'GET'])
+def get_messages(id: int):
+    if request.method == 'POST':
+        message = request.form['message']
+        message_table = MessageTable( message_body=message, sender_id=2, chat_id=id, message_status=MessageStatus.SENT, send_time=datetime.datetime.now())
+        chat_repo.send_message(message_table)
+        return chat_repo.get_all_messages(id)
+    else:
+        print("got here")
+        return chat_repo.get_all_messages(id)
+
+@urls_blueprint.route('/')
+def get_all_messages():
+    return chat_repo.get_all_messages()
+
+@urls_blueprint.route('/<chat_id>/delete/<message_id>')
+def delete_message(chat_id: int, message_id: int):
+    chat_repo.delete_message(chat_id, message_id)
+
+
+@urls_blueprint.route('/{id}/read')
+def read_message(id: int):
     try:
-        chat_service.read .finish_delivery(id)
+        chat_repo.get_messages(id)
     except KeyError:
         raise HTTPException(404, f'Error {id} нет')
     except ValueError:
         raise HTTPException(400, f'Delivery with id={id} can\'t be finished')
-@chat_router.get('/write/{message}')
-def send_message(message: str, chat_service: ChatService = Depends(ChatService)):
-    chat_service.send_message(Message(message, uuid4))
+
+@urls_blueprint.route('/{id}/write/{message}')
+def send_message(chat_id: int, message: str):
+    if request.method == 'POST':
+        message = request.form['message']
+        message_table = MessageTable(2, "Soobshenia", 2, 3, datetime.datetime.now())
+        chat_repo.send_message(message)
+    else:
+        return redirect(url_for('api/1'))
+
+

@@ -1,15 +1,18 @@
-from sqlalchemy import Column, String, DateTime, Enum, Integer
 from services.chat_service.models.message import MessageStatus
-from services.chat_service.db.base_schema import Base
-from services.chat_service.db.database import engine
+from sqlalchemy import Integer, String, DateTime, Enum
+from sqlalchemy.orm import Mapped, mapped_column
+from services.chat_service.db.database import db
+from datetime import datetime
 
-class MessageTable(Base):
-    __tablename__ = 'messages'
-    id = Column(Integer, primary_key=True)
-    message_body = Column(String(255), nullable=True)
-    sender_id = Column(Integer, nullable=False)
-    message_status = Column(Enum(MessageStatus), nullable=False)
-    send_time = Column(DateTime, nullable=False)
+class MessageTable(db.Model):
+    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True) 
+    message_body: Mapped[String] = mapped_column(String(255))
+    sender_id: Mapped[int] = mapped_column(Integer)
+    chat_id: Mapped[int] = mapped_column(Integer)
+    message_status: Mapped[MessageStatus]= mapped_column(Enum(MessageStatus))
+    send_time: Mapped[datetime]= mapped_column(DateTime)
 
+    def as_dict(self):
+       return {c.name: getattr(self, c.name) for c in self.__table__.columns}
 
-Base.metadata.create_all(engine)
+#Base.metadata.create_all(engine)
