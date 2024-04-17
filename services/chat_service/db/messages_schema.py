@@ -12,7 +12,5 @@ class MessageTable(db.Model):
     message_status: Mapped[MessageStatus]= mapped_column(Enum(MessageStatus))
     send_time: Mapped[datetime]= mapped_column(DateTime)
 
-    def as_dict(self):
-       return {c.name: getattr(self, c.name) for c in self.__table__.columns}
 
 #Base.metadata.create_all(engine)

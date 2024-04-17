@@ -27,5 +27,5 @@ def login():
         return redirect(url_for('success', name=user))
 
 if __name__ == "__main__":
-    app.run(host="192.168.1.75", port=8000, debug=True)
+    app.run(host="127.0.0.1", port=8000, debug=True)
     print("jopa")

@@ -45,6 +45,19 @@ class ChatRepo():
         } for message in messages]
         return render_template("index.html", messages=jason)
 
+    def get_all_messages2(self):
+        messages = MessageTable.query.all()
+
+        jason = [{
+            'id': message.id,
+            'message_body': message.message_body,
+            'sender_id': message.sender_id,
+            'chat_id': message.chat_id,
+            'message_status': message.message_status.value if message.message_status else None,
+            'send_time': message.send_time.isoformat() if message.send_time else None
+        } for message in messages]
+        return jason
+
     def get_messages_by_text(self, text: str):
         return [item for item in messages if text in item.message_body]
     

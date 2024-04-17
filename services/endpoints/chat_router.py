@@ -21,6 +21,10 @@ def get_messages(id: int):
         print("got here")
         return chat_repo.get_all_messages(id)
 
+@urls_blueprint.route('/messages', methods=['GET'])
+def get_messages():
+    return chat_repo.get_all_messages2()
+
 @urls_blueprint.route('/')
 def get_all_messages():
     return chat_repo.get_all_messages()
@@ -47,5 +51,4 @@ def send_message(chat_id: int, message: str):
         chat_repo.send_message(message)
     else:
         return redirect(url_for('api/1'))
-
 
