@@ -3,9 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column; /* Изменение направления flex с горизонтального на вертикальное */
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+            font-family: Arial, sans-serif;
+        }
+        .success-message {
+            font-size: 2em; /* Увеличение размера текста */
+            text-align: center; /* Выравнивание текста по центру */
+            margin-bottom: 20px; /* Отступ снизу для текста */
+        }
+        .contacts-button {
+            display: block;
+            width: 200px;
+            height: 40px;
+            margin: 20px auto;
+            background-color: #007bff;
+            color: #fff;
+            text-align: center;
+            line-height: 40px;
+            border-radius: 5px;
+            text-decoration: none;
+        }
+        .contacts-button:hover {
+            background-color: #0056b3;
+        }
+    </style>
 </head>
 <body>
-<li>"Вы вошли"</li>
-
+    <div class="success-message">
+        Вы успешно вошли
+    </div>
+    <a href="poisk" class="contacts-button">Перейти к контактам</a>
 </body>
 </html>
