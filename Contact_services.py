@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for
 from config import host, db_name, user, password
 import pymysql
-
+import requests
 
 app = Flask(__name__)
 
@@ -56,17 +56,16 @@ def get_bd_conectin():
         print(ex)
 
 
-
-
-@app.route("/")
+@app.route("/poisk")
 def index():
-
-    connnection = get_bd_conectin()
-    with connnection.cursor() as cursor:
+    connection = get_bd_conectin()
+    with connection.cursor() as cursor:
         select_row = "SELECT * FROM users;"
         cursor.execute(select_row)
         rows = cursor.fetchall()
         return render_template('index.html', rows=rows)
+
+
 
 @app.route('/friends', methods=['GET', 'POST'])
 def friends():
@@ -74,7 +73,8 @@ def friends():
         user_id = request.form.get('user_id')
         connection = get_bd_conectin()
         cursor = connection.cursor()
-        cursor.execute("INSERT INTO friends (id_friends, name_friends, number_friends) SELECT id_users, name_users, number_users FROM users WHERE id_users = %s;", (user_id,))
+        cursor.execute("INSERT INTO friends (id_friends, name_friends, number_friends) SELECT id_users, name_users, number_users FROM users WHERE id_users = %s;",
+            (user_id,))
         connection.commit()
         return redirect(url_for('friends'))
     connection = get_bd_conectin()
@@ -85,4 +85,24 @@ def friends():
 
 
 
+def send_request(url="http://62.217.187.32:8000/api/messages"):
+    response = requests.get(url="http://62.217.187.32:8000/api/messages")
+    if response.status_code == 200:
+        return response.json()
+    else:
+        return None
+    
 
+
+@app.route('/users/<id>', methods=['GET', 'POST'])
+def ilya(id: int):
+    conn = get_bd_conectin()
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM friends WHERE id_friends = {}".format(id))
+    user = cursor.fetchone()
+    id, name, pass_ = user
+    return user["name_friends"]
+
+
+if __name__ == "__main__":
+    app.run(debug=True)
