@@ -22,7 +22,7 @@ def get_messages(id: int):
         return chat_repo.get_all_messages(id)
 
 @urls_blueprint.route('/messages', methods=['GET'])
-def get_messages():
+def get_messages2():
     return chat_repo.get_all_messages2()
 
 @urls_blueprint.route('/')
@@ -33,6 +33,9 @@ def get_all_messages():
 def delete_message(chat_id: int, message_id: int):
     chat_repo.delete_message(chat_id, message_id)
 
+@urls_blueprint.route('/get_chats/<user_id>')
+def get_chats_by_id_user_id(user_id: int):
+    return chat_repo.get_chats(user_id)
 
 @urls_blueprint.route('/{id}/read')
 def read_message(id: int):
@@ -50,5 +53,14 @@ def send_message(chat_id: int, message: str):
         message_table = MessageTable(2, "Soobshenia", 2, 3, datetime.datetime.now())
         chat_repo.send_message(message)
     else:
-        return redirect(url_for('api/1'))
+        return redirect(url_for('api/{}').format(chat_id))
+
+@urls_blueprint.route('/create_chat', methods=['POST'])
+def create_chat():
+    users = request.args.getlist('user', type=int)
+    print("users")
+    print(users)
+    chat_name = request.args.get('name', type=str)
+    chat_repo.create_chat(chat_name=chat_name, partisipants=users)
+    return "it worked"
 

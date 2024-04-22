@@ -7,9 +7,8 @@ from services.chat_service.db.database import db
 
 
 class ChatTable(db.Model):
-    id: Mapped[int] = mapped_column(primary_key=True) 
+    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True) 
     name: Mapped[str] = mapped_column(String(255))
-    partisipants: Mapped[int]
 
 
 #Base.metadata.create_all(engine)

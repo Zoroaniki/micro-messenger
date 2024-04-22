@@ -12,6 +12,7 @@ from services.chat_service.models import message, chat
 from services.chat_service.db.chat_schema import ChatTable
 from services.chat_service.db.messages_schema import MessageTable
 from services.chat_service.db import chat_schema, messages_schema
+from services.chat_service.db.user_group_membership import UserChatAssociation, Users
 
 from services.chat_service.db.database import db
 
@@ -26,10 +27,25 @@ class ChatRepo():
         #self.db.add(new_message)
         #self.db.commit()
 
-    def create_chat(self, chat_name: str, partisipants: []):
-        self.db.add(Base, Chat(name=chat_name, participants=partisipants))
-        self.db.commit()
+    def create_chat(self, chat_name: str, partisipants: [] = [0]):
+        print(partisipants)
+        print(chat_name)
+        chat = ChatTable(name=chat_name)
+        db.session.add(chat)
+        print(chat.name)
+        db.session.commit()
+        for user in partisipants :
+            userDb = Users(id=user)
+            db.session.merge(userDb)
+            print(user)
+            uca = UserChatAssociation(user_id=user, chat_id=chat.id)
+            print(uca.chat_id)
+            print(uca.user_id)
+            db.session.add(uca)
+            print(type(uca))
+            db.session.commit()
         #chats.append(Chat)
+        
 
     def get_all_messages(self, chat_id):
         #ass = self.db.query(messages_schema.MessageTable)
@@ -58,6 +74,16 @@ class ChatRepo():
         } for message in messages]
         return jason
 
+    def get_chats(self, user_id):
+        chats = ChatTable.query.join(UserChatAssociation).filter(UserChatAssociation.user_id == user_id).all()
+        
+        jason = [{
+            'id': chat.id,
+            'name': chat.name,
+        } for chat in chats]
+        print(jason)
+        return jason
+
     def get_messages_by_text(self, text: str):
         return [item for item in messages if text in item.message_body]
     
@@ -71,8 +97,6 @@ class ChatRepo():
         db.session.add(message)
         db.session.commit()
 
-    def create_chat(self, chat_name: str, partisipants = [int]):
-        self.chat_repo.create_chat(chat_name, partisipants)
     
     def delete_message(self, chat_id: int, message_id: int):
         to_delete = self.db.query(MessageTable).filter(MessageTable.chat_id == chat_id and MessageTable.id == message_id)
@@ -89,4 +113,9 @@ class ChatRepo():
 
     def get_partisipants(self, chat_id: int):
         return self.chat_repo.get_partisipants(chat_id)
+
+
+        
+
+
 
