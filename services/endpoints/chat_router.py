@@ -55,7 +55,7 @@ def send_message(chat_id: int, message: str):
     else:
         return redirect(url_for('api/{}').format(chat_id))
 
-@urls_blueprint.route('/create_chat', methods=['POST'])
+@urls_blueprint.route('/create_chat', methods=['GET'])
 def create_chat():
     users = request.args.getlist('user', type=int)
     print("users")
