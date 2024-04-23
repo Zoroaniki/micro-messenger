@@ -15,7 +15,7 @@ from db import chat_schema, messages_schema
 from db.user_group_membership import UserChatAssociation, Users
 
 from db.database import db
-from requests.requester import request_name
+from requests_dir.requester import request_name
 
 
 

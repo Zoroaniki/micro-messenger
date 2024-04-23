@@ -40,7 +40,7 @@ def get_chats_by_id_user_id(user_id: int):
 
 @urls_blueprint.route('/back_to_friends')
 def go_back_from_chat():
-    return redirect("192.168.1.75:8001/friends")
+    return redirect("http://62.217.187.32:8001/poisk", code=301)
 
 @urls_blueprint.route('/{id}/read')
 def read_message(id: int):

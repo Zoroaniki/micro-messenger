@@ -1,4 +1,4 @@
 host = "localhost"
-user = "root"
-password = "AFDG56478"
+user = "ilfi"
+password = "password"
 db_name = "contact"

@@ -4,18 +4,21 @@ services:
   chat_service:
 # Путь до Dockerfile сервиса
     build: services/chat_service
+    network_mode: host
   # Даём доступ к 80 порту внутри контейнера через 8000 на машине
     ports:
-      - 8000:80
+      - 8000:8000
     # Передаём переменные окружения, которые будут использованы приложением
 
   contacts:
     build: services/Contacts
+    network_mode: host
     ports: 
-      - 8001:80
+      - 8001:8001
 
   registration:
     build: services/Authenticate_user
+    network_mode: host
     ports: 
-      - 8002:80
+      - 8002:8002
 # Перед запуском этого сервиса ждём пока запустится БД
