@@ -15,6 +15,7 @@ from db import chat_schema, messages_schema
 from db.user_group_membership import UserChatAssociation, Users
 
 from db.database import db
+from requests.requester import request_name
 
 
 
@@ -57,7 +58,8 @@ class ChatRepo():
             'sender_id': message.sender_id,
             'chat_id': message.chat_id,
             'message_status': message.message_status.value if message.message_status else None,
-            'send_time': message.send_time.isoformat() if message.send_time else None
+            'send_time': message.send_time.isoformat() if message.send_time else None,
+            'name': request_name(message.sender_id)
         } for message in messages]
         return render_template("index.html", messages=jason)
 
@@ -70,7 +72,8 @@ class ChatRepo():
             'sender_id': message.sender_id,
             'chat_id': message.chat_id,
             'message_status': message.message_status.value if message.message_status else None,
-            'send_time': message.send_time.isoformat() if message.send_time else None
+            'send_time': message.send_time.isoformat() if message.send_time else None,
+            'name': request_name(message.sender_id)
         } for message in messages]
         return jason
 

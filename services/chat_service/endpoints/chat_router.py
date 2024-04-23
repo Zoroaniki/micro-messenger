@@ -37,6 +37,11 @@ def delete_message(chat_id: int, message_id: int):
 def get_chats_by_id_user_id(user_id: int):
     return chat_repo.get_chats(user_id)
 
+
+@urls_blueprint.route('/back_to_friends')
+def go_back_from_chat():
+    return redirect("192.168.1.75:8001/friends")
+
 @urls_blueprint.route('/{id}/read')
 def read_message(id: int):
     try:

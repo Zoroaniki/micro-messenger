@@ -2,9 +2,19 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <style>
+        #back-button {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+        }
+    </style>
     <title>Chat Application</title>
 </head>
 <body>
+    <form action="{{ url_for('chat.go_back_from_chat') }}" method="get">
+        <button type="submit">Forward</button>
+    </form>
     <h1>Chat Application</h1>
     <div id="chat-window">
         {% if message %}
@@ -17,7 +27,7 @@
     </form>
 {% block content %}
 {% for d in messages %}
-  <div><p>{{ d.sender_id }}:<br>{{ d.message_body }}
+  <div><p>{{ d.name }}:<br>{{ d.message_body }}
       <br>{{ d.send_time}}
   </p></div>
 {% endfor %}
