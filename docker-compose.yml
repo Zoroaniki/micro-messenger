@@ -3,21 +3,19 @@ version: '3.9'
 services:
   chat_service:
 # Путь до Dockerfile сервиса
-  build: services/chat_service
-# Даём доступ к 80 порту внутри контейнера через 8000 на машине
-  ports:
-    - 8000:80
-  # Передаём переменные окружения, которые будут использованы приложением
-  environment:
-    - POSTGRES_URL=postgresql://myuser:pgpwd@student_db:5432/postgres
-    - AMQP_URL=amqp://guest:guest123@51.250.26.59:5672/
+    build: services/chat_service
+  # Даём доступ к 80 порту внутри контейнера через 8000 на машине
+    ports:
+      - 8000:80
+    # Передаём переменные окружения, которые будут использованы приложением
 
   contacts:
     build: services/Contacts
-
-    ports: 8001:80
+    ports: 
+      - 8001:80
 
   registration:
     build: services/Authenticate_user
-    ports: 8002:80
+    ports: 
+      - 8002:80
 # Перед запуском этого сервиса ждём пока запустится БД
