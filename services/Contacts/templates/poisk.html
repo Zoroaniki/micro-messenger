@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Users</title>
+</head>
+<body>
+    <h1>Users</h1>
+    <ul>
+        {% for row in rows %}
+        <li>
+            <li>{{ row.name_users }}</li>
+            <form action="{{ url_for('friends') }}" method="post">
+                <input type="hidden" name="user_id" value={{ row.id_users }}>
+                <button type="submit">Add {{ row.name_users }} to friends</button>
+            </form>
+        </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

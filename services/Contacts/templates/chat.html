@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Chat</title>
+</head>
+<body>
+    <ul>
+        {% for friend in friends %}
+            <li>
+                {{ friend.name_friends }} <!-- Assuming 'name' is a field in your 'friends' table -->
+                <button>Go to Chat</button>
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
