@@ -3,7 +3,7 @@ from sqlalchemy import Column, String, DateTime, Enum, Integer
 
 from sqlalchemy import Integer, String
 from sqlalchemy.orm import Mapped, mapped_column
-from services.chat_service.db.database import db
+from db.database import db
 
 
 class ChatTable(db.Model):

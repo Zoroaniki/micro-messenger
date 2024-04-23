@@ -1,7 +1,7 @@
-from services.chat_service.models.message import MessageStatus
+from models.message import MessageStatus
 from sqlalchemy import Integer, String, DateTime, Enum
 from sqlalchemy.orm import Mapped, mapped_column
-from services.chat_service.db.database import db
+from db.database import db
 from datetime import datetime
 
 class MessageTable(db.Model):

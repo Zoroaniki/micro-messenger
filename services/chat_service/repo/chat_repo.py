@@ -1,5 +1,5 @@
-from services.chat_service.models.chat import Chat
-from services.chat_service.models.message import Message, MessageStatus
+from models.chat import Chat
+from models.message import Message, MessageStatus
 from uuid import UUID
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
@@ -8,13 +8,13 @@ from flask import jsonify
 import json
 import sqlalchemy
 import datetime
-from services.chat_service.models import message, chat
-from services.chat_service.db.chat_schema import ChatTable
-from services.chat_service.db.messages_schema import MessageTable
-from services.chat_service.db import chat_schema, messages_schema
-from services.chat_service.db.user_group_membership import UserChatAssociation, Users
+from models import message, chat
+from db.chat_schema import ChatTable
+from db.messages_schema import MessageTable
+from db import chat_schema, messages_schema
+from db.user_group_membership import UserChatAssociation, Users
 
-from services.chat_service.db.database import db
+from db.database import db
 
 
 

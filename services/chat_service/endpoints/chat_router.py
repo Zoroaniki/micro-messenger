@@ -1,9 +1,9 @@
 from fastapi import APIRouter, Depends, HTTPException, Body
 from flask import Blueprint, request, redirect
 from uuid import UUID, uuid4
-from services.chat_service.repo.chat_repo import ChatRepo
-from services.chat_service.models.message import Message, MessageStatus
-from services.chat_service.db.messages_schema import MessageTable
+from repo.chat_repo import ChatRepo
+from models.message import Message, MessageStatus
+from db.messages_schema import MessageTable
 import datetime
 
 urls_blueprint = Blueprint('chat', __name__,)

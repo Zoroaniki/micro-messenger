@@ -1,7 +1,7 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import DeclarativeBase
-from services.chat_service.db.base_schema import Base
+from db.base_schema import Base
 
 #from sqlalchemy import create_engine
 #from sqlalchemy.orm import sessionmaker

@@ -1,6 +1,6 @@
 from sqlalchemy import Table, ForeignKey, Column, Integer, String
 from sqlalchemy.orm import relationship
-from services.chat_service.db.database import db
+from db.database import db
 from sqlalchemy.orm import Mapped, mapped_column
 
 class UserChatAssociation(db.Model):

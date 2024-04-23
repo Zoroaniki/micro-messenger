@@ -1,7 +1,7 @@
 from sqlalchemy import Column, String, DateTime, Enum, Integer
-from services.chat_service.models.message import MessageStatus
-from services.chat_service.db.base_schema import Base
-from services.chat_service.db.database import engine
+from models.message import MessageStatus
+from db.base_schema import Base
+from db.database import engine
 
 
 

@@ -1,10 +1,10 @@
 #from services.chat_service.chat_service import ChatService
 from flask import render_template, Flask, redirect, url_for, request
 from uuid import UUID, uuid4
-from services.chat_service.models.message import Message
+from models.message import Message
 from fastapi import FastAPI
-from services.endpoints.chat_router import urls_blueprint
-from services.chat_service.db.database import db
+from endpoints.chat_router import urls_blueprint
+from db.database import db
 
 app = Flask(__name__, template_folder='services/chat_service/templates')
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://ilfi:password@localhost/chat_service_db?charset=utf8mb4&collation=utf8mb4_general_ci'
