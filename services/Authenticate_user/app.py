@@ -2,6 +2,8 @@ from flask import Flask, render_template, request, redirect, url_for, session, j
 import pymysql
 import mysql.connector
 import requests
+from uuid import uuid4
+import json
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'
@@ -65,8 +67,8 @@ def ilya(id: int):
     cursor.execute("SELECT * FROM users WHERE id = {} ".format(id))
     user = cursor.fetchone()
     print(user)
-    id, name, password, number = user
-    return name
+    r = json.dumps(user)
+    return r
 
 
 def send_request(url="http://127.0.0.1:5000/poisk"):
@@ -86,11 +88,11 @@ def register():
         number = request.form['number']
         conn = get_db()
         cursor = conn.cursor()
-        cursor.execute("INSERT INTO users (name, pass, number) VALUES (%s, %s, %s)", (username, password, number))
+        cursor.execute("INSERT INTO users (name, pass, number, uuid) VALUES (%s, %s, %s, %s)", (username, password, number, str(uuid4())))
         conn.commit()
         return redirect(url_for('login'))
     return render_template('register.html')
 
 
 if __name__ == '__main__':
-    app.run(debug=True, host="192.168.0.141")
+    app.run(debug=True, host="192.168.1.75", port=8002)
