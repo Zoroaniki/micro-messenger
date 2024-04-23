@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Registration Form</title>
+    <style>
+        body {
+            background-color: #f0f0f0; /* Цвет фона для всего тела документа */
+            font-family: Arial, sans-serif; /* Установка шрифта для всего документа */
+        }
+        h1 {
+            color: #333; /* Цвет текста для заголовка */
+            text-align: center; /* Выравнивание текста по центру */
+        }
+        form {
+            width: 300px; /* Ширина формы */
+            margin: 0 auto; /* Центрирование формы по горизонтали */
+            padding: 20px; /* Внутренний отступ для формы */
+            background-color: #fff; /* Цвет фона для формы */
+            border-radius: 5px; /* Скругление углов формы */
+            box-shadow: 0 0 10px rgba(0,0,0,0.1); /* Тень вокруг формы */
+        }
+        label {
+            display: block; /* Блочное отображение меток */
+            margin-bottom: 5px; /* Отступ снизу для меток */
+        }
+        input[type="text"], input[type="password"] {
+            width: 100%; /* Ширина поля ввода */
+            padding: 10px; /* Внутренний отступ для полей ввода */
+            margin-bottom: 10px; /* Отступ снизу для полей ввода */
+            border: 1px solid #ddd; /* Граница полей ввода */
+            border-radius: 3px; /* Скругление углов полей ввода */
+        }
+        input[type="submit"] {
+            background-color: #007bff; /* Цвет фона кнопки */
+            color: #fff; /* Цвет текста кнопки */
+            border: none; /* Удаление границы кнопки */
+            padding: 10px 20px; /* Внутренний отступ для кнопки */
+            border-radius: 3px; /* Скругление углов кнопки */
+            cursor: pointer; /* Изменение курсора на указатель при наведении */
+        }
+        input[type="submit"]:hover {
+            background-color: #0056b3; /* Цвет фона кнопки при наведении */
+        }
+    </style>
+</head>
+<body>
+    <h1>Registration Form</h1>
+    <form method="POST" action="/register">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required>
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required>
+        <label for="number">Number:</label>
+        <input type="text" id="number" name="number">
+        <input type="submit" value="Register">
+    </form>
+</body>
+</html>
