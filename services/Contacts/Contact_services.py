@@ -66,14 +66,14 @@ def index():
         return render_template('index.html', rows=rows)
 
 
-
 @app.route('/friends', methods=['GET', 'POST'])
 def friends():
     if request.method == 'POST':
         user_id = request.form.get('user_id')
         connection = get_bd_conectin()
         cursor = connection.cursor()
-        cursor.execute("INSERT INTO friends (id_friends, name_friends, number_friends) SELECT id_users, name_users, number_users FROM users WHERE id_users = %s;",
+        cursor.execute(
+            "INSERT INTO friends (id_friends, name_friends, number_friends) SELECT id_users, name_users, number_users FROM users WHERE id_users = %s;",
             (user_id,))
         connection.commit()
         return redirect(url_for('friends'))
@@ -84,6 +84,14 @@ def friends():
     return render_template('friends.html', friends=friends)
 
 
+@app.route('/chat', methods=['GET', 'POST'])
+def chatuser():
+    conn = get_bd_conectin()
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM friends")
+    friends = cursor.fetchall()
+    return render_template('chat.html', friends=friends)
+
 
 def send_request(url="http://62.217.187.32:8000/api/messages"):
     response = requests.get(url="http://62.217.187.32:8000/api/messages")
@@ -91,7 +99,6 @@ def send_request(url="http://62.217.187.32:8000/api/messages"):
         return response.json()
     else:
         return None
-    
 
 
 @app.route('/users/<id>', methods=['GET', 'POST'])
@@ -100,7 +107,6 @@ def ilya(id: int):
     cursor = conn.cursor()
     cursor.execute("SELECT * FROM friends WHERE id_friends = {}".format(id))
     user = cursor.fetchone()
-    id, name, pass_ = user
     return user["name_friends"]
 
 
