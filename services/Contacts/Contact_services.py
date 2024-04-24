@@ -55,6 +55,9 @@ def get_bd_conectin():
         print(ex)
 
 
+
+
+
 @app.route("/poisk")
 def index():
     connection = get_bd_conectin()
