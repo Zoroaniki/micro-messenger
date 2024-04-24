@@ -5,7 +5,7 @@ from models.message import Message
 from fastapi import FastAPI
 from endpoints.chat_router import urls_blueprint
 from db.database import db
-from dotenv import load_dotenv, dontenv_values
+from dotenv import load_dotenv, dotenv_values
 import os
 
 load_dotenv()
@@ -14,7 +14,7 @@ user = os.getenv("BD_USER_NAME")
 password = os.getenv("BD_PASSWORD")
 bd_name = os.getenv("BD_NAME")
 app = Flask(__name__, template_folder='templates')
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://{user}:{password}@localhost/{bd_name}?charset=utf8mb4&collation=utf8mb4_general_ci'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://{}:{}@localhost/{}?charset=utf8mb4&collation=utf8mb4_general_ci'.format(user, password, bd_name)
 db.init_app(app)
 app.register_blueprint(urls_blueprint, url_prefix='/api')
 
