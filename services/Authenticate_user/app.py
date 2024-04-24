@@ -5,7 +5,7 @@ import requests
 from uuid import uuid4
 import json
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder='Templates')
 app.secret_key = 'your_secret_key'
 
 
@@ -15,8 +15,8 @@ def get_db():
         connection = mysql.connector.connect(host='localhost',
                                              port='3306',
                                              database='users',
-                                             user='root',
-                                             password='250702')
+                                             user='ilfi',
+                                             password='password')
         if connection.is_connected():
             db_Info = connection.get_server_info()
             print("Подключено к серверу MySQL версии", db_Info)
@@ -72,7 +72,7 @@ def ilya(id: int):
 
 
 def send_request(url="http://127.0.0.1:5000/poisk"):
-    response = requests.get(url="http://127.0.0.1:5000/poisk")
+    response = requests.get(url="0.0.0.0:8001/poisk")
     print(response)
     if response.status_code == 200:
         return response.json()
@@ -95,4 +95,4 @@ def register():
 
 
 if __name__ == '__main__':
-    app.run(debug=True, host="192.168.1.75", port=8002)
+    app.run(debug=True, host="0.0.0.0", port=8002)

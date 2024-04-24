@@ -1,7 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for
 from config import host, db_name, user, password
 import pymysql
-import requests
 
 app = Flask(__name__)
 
@@ -9,11 +8,11 @@ app = Flask(__name__)
 def get_bd_conectin():
     try:
         connection = pymysql.connect(
-            host=host,
+            host="localhost",
             port=3306,
-            user=user,
-            password=password,
-            database=db_name,
+            user="ilfi",
+            password="password",
+            database="users",
             cursorclass=pymysql.cursors.DictCursor,
         )
 
@@ -63,7 +62,7 @@ def index():
         select_row = "SELECT * FROM users;"
         cursor.execute(select_row)
         rows = cursor.fetchall()
-        return render_template('index.html', rows=rows)
+        return render_template('poisk.html', rows=rows)
 
 
 @app.route('/friends', methods=['GET', 'POST'])
@@ -111,4 +110,4 @@ def ilya(id: int):
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True, host="0.0.0.0", port=8001)
