@@ -1,9 +1,17 @@
 from flask import Flask, render_template, request, redirect, url_for
-from config import host, db_name, user, password
 import pymysql
+import os
+from dotenv import load_dotenv, dotenv_values 
 
 app = Flask(__name__)
+load_dotenv()
 
+user = os.getenv("BD_USER_NAME")
+password = os.getenv("BD_PASSWORD")
+bd_name = os.getenv("BD_NAME")
+print(user)
+print(password)
+print(bd_name)
 
 def get_bd_conectin():
     try:
@@ -46,8 +54,8 @@ def get_bd_conectin():
             connection.close()
             print("successfully connection")
         '''
-
         return connection
+
 
 
     except Exception as ex:
@@ -71,11 +79,11 @@ def index():
 @app.route('/friends', methods=['GET', 'POST'])
 def friends():
     if request.method == 'POST':
-        user_id = request.form.get('user_id')
+        user_id = request.form.get('id')
         connection = get_bd_conectin()
         cursor = connection.cursor()
         cursor.execute(
-            "INSERT INTO friends (id_friends, name_friends, number_friends) SELECT id_users, name_users, number_users FROM users WHERE id_users = %s;",
+            "INSERT INTO friends (id_friends, name_friends, number_friends) SELECT id, name, number FROM users WHERE id = %s;",
             (user_id,))
         connection.commit()
         return redirect(url_for('friends'))
