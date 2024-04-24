@@ -27,5 +27,3 @@ jobs:
         run: |
           docker push ${{ secrts.DOCKER_USERNAME }}/chat_service:latest
     
-  deploy:
-    runs-on:ubuntu-latest
