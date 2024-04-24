@@ -16,7 +16,7 @@ jobs:
 
       - name: Build docker image
         run: |
-          docker build -f ./services/chat_service/Dockerfile . --tag chat_service:latest
+          docker build -f ./services/chat_service/Dockerfile ./services/chat_service --tag chat_service:latest
       - name: Log in to DockerHub
         uses: docker/login-action@v3.0.0
         with:
