@@ -3,13 +3,54 @@
 <head>
     <meta charset="UTF-8">
     <title>Chat</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+        }
+        li {
+            background-color: #fff;
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        li:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .create-chat-btn {
+            display: block;
+            margin: 20px auto;
+            width: fit-content;
+        }
+    </style>
 </head>
 <body>
+    <button class="create-chat-btn">Создать чат</button>
     <ul>
         {% for friend in friends %}
             <li>
-                {{ friend.name_friends }} <!-- Assuming 'name' is a field in your 'friends' table -->
-                <button>Go to Chat</button>
+                {{ friend.name_friends }}
+                <button>Добавить чат</button>
             </li>
         {% endfor %}
     </ul>
