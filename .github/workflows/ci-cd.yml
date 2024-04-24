@@ -17,7 +17,7 @@ jobs:
 
       - name: Build docker image
         run: |
-          echo pwd &&
+          echo $pwd &&
           docker build ./services/chat_service --file Dockerfile --tag chat_service:latest
 
       - name: Log in to DockerHub
