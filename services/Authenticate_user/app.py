@@ -5,6 +5,7 @@ import requests
 from uuid import uuid4
 import json
 
+
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'
 
@@ -95,4 +96,4 @@ def register():
 
 
 if __name__ == '__main__':
-    app.run(debug=True, host="192.168.1.75", port=8002)
+    app.run(debug=True, host="192.168.0.141")
