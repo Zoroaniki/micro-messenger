@@ -14,7 +14,7 @@ chat_repo = ChatRepo()
 @urls_blueprint.route('/<id>', methods=['POST', 'GET'])
 def get_messages(id: int):
     users = chat_repo.get_users_by_chat_id(id)
-    auth = request.header("Auth")["uuid"]
+    auth = request.header("Authorization")["uuid"]
     current_user = -1
     for user in users:
         if auth == request_uuid(user):
