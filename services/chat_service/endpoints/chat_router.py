@@ -4,6 +4,7 @@ from uuid import UUID, uuid4
 from repo.chat_repo import ChatRepo
 from models.message import Message, MessageStatus
 from db.messages_schema import MessageTable
+from requests_dir.requester import request_uuid
 import datetime
 
 urls_blueprint = Blueprint('chat', __name__,)
@@ -12,13 +13,23 @@ chat_repo = ChatRepo()
 
 @urls_blueprint.route('/<id>', methods=['POST', 'GET'])
 def get_messages(id: int):
+    users = chat_repo.get_users_by_chat_id(id)
+    auth = request.header("Auth")["uuid"]
+    current_user = -1
+    for user in users:
+        if auth == request_uuid(user):
+            current_user = user
+            break
+
+    if current_user == -1:
+        raise HTTPException(403, f'#Нет доступа к этому чату!')
+
     if request.method == 'POST':
         message = request.form['message']
-        message_table = MessageTable( message_body=message, sender_id=2, chat_id=id, message_status=MessageStatus.SENT, send_time=datetime.datetime.now())
+        message_table = MessageTable( message_body=message, sender_id=current_user, chat_id=id, message_status=MessageStatus.SENT, send_time=datetime.datetime.now())
         chat_repo.send_message(message_table)
         return chat_repo.get_all_messages(id)
     else:
-        print("got here")
         return chat_repo.get_all_messages(id)
 
 @urls_blueprint.route('/messages', methods=['GET'])
