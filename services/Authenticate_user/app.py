@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, session, jsonify
+from flask import Flask, render_template, request, redirect, url_for, session, jsonify,make_response
 import pymysql
 import mysql.connector
 import requests
@@ -15,8 +15,8 @@ def get_db():
         connection = mysql.connector.connect(host='localhost',
                                              port='3306',
                                              database='users',
-                                             user='ilfi',
-                                             password='password')
+                                             user='root',
+                                             password='AFDG56478')
         if connection.is_connected():
             db_Info = connection.get_server_info()
             print("Подключено к серверу MySQL версии", db_Info)
@@ -50,11 +50,12 @@ def login():
         number = request.form['number']
         conn = get_db()
         cursor = conn.cursor()
-        cursor.execute("SELECT * FROM users WHERE name = %s AND pass = %s AND number = %s", (username, password, number))
+        cursor.execute("SELECT uuid FROM users WHERE name = %s AND pass = %s AND number = %s", (username, password, number))
         user = cursor.fetchone()
         if user:
-            session['username'] = username
-            return redirect(url_for('index'))
+            uuid = user
+            session['uuid'] = uuid
+            return redirect('http://localhost:8001/poisk')
         else:
             return 'Invalid username or password'
     return render_template('login.html')

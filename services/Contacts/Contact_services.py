@@ -1,9 +1,10 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, make_response, session
 import pymysql
 import os
-from dotenv import load_dotenv, dotenv_values 
+from dotenv import load_dotenv, dotenv_values
 
 app = Flask(__name__)
+app.secret_key = 'your_secret_key'
 load_dotenv()
 
 user = os.getenv("BD_USER_NAME")
@@ -18,9 +19,9 @@ def get_bd_conectin():
         connection = pymysql.connect(
             host="localhost",
             port=3306,
-            user="ilfi",
-            password="password",
-            database="users",
+            user=user,
+            password=password,
+            database=bd_name,
             cursorclass=pymysql.cursors.DictCursor,
         )
 
@@ -69,11 +70,14 @@ def get_bd_conectin():
 @app.route("/poisk")
 def index():
     connection = get_bd_conectin()
-    with connection.cursor() as cursor:
-        select_row = "SELECT * FROM users;"
-        cursor.execute(select_row)
-        rows = cursor.fetchall()
-        return render_template('poisk.html', rows=rows)
+    uuid = session.get('uuid')
+    if uuid:
+        with connection.cursor() as cursor:
+            cursor.execute("SELECT * FROM users WHERE uuid != %s", (uuid,))
+            rows = cursor.fetchall()
+            return render_template('poisk.html', rows=rows)
+    else:
+        return 'UUID not found in session'
 
 
 @app.route('/friends', methods=['GET', 'POST'])
@@ -102,13 +106,6 @@ def chatuser():
     friends = cursor.fetchall()
     return render_template('chat.html', friends=friends)
 
-
-def send_request(url="http://62.217.187.32:8000/api/messages"):
-    response = requests.get(url="http://62.217.187.32:8000/api/messages")
-    if response.status_code == 200:
-        return response.json()
-    else:
-        return None
 
 
 @app.route('/users/<id>', methods=['GET', 'POST'])
