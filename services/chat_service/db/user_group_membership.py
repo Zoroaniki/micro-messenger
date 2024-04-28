@@ -12,4 +12,5 @@ class UserChatAssociation(db.Model):
 
 class Users(db.Model):
     id: Mapped[int] = mapped_column(primary_key=True) 
+    uuid: Mapped[int] = mapped_column()
 
