@@ -82,6 +82,14 @@
         </li>
         {% endfor %}
          <a href="chat" class="contacts-button">Перейти к контактам</a>
+         {% endfor %}
+        <a href="chat" class="contacts-button">
+            {% if chat_created %}
+                Перейти к контактам
+            {% else %}
+                Создать чат
+            {% endif %}
+        </a>
     </ul>
 </body>
 </html>

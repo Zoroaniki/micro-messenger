@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Depends, HTTPException, Body
-from flask import Blueprint, request, redirect
+from flask import Blueprint, request, redirect, session
 from uuid import UUID, uuid4
 from repo.chat_repo import ChatRepo
 from models.message import Message, MessageStatus
@@ -13,8 +13,10 @@ chat_repo = ChatRepo()
 
 @urls_blueprint.route('/<id>', methods=['POST', 'GET'])
 def get_messages(id: int):
-    users = chat_repo.get_users_by_chat_id(id)
-    auth = request.header("Authorization")["uuid"]
+
+    auth = session.get('uuid')
+    print("XDDDD: {}".format(id))
+    users = chat_repo.get_users_by_chat_id(int(id))
     current_user = -1
     for user in users:
         if auth == request_uuid(user):
@@ -71,7 +73,7 @@ def send_message(chat_id: int, message: str):
     else:
         return redirect(url_for('api/{}').format(chat_id))
 
-@urls_blueprint.route('/create_chat', methods=['GET'])
+@urls_blueprint.route('/create_chat', methods=['POST'])
 def create_chat():
     users = request.args.getlist('user', type=int)
     print("users")

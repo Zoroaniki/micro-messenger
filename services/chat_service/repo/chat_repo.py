@@ -77,10 +77,8 @@ class ChatRepo():
         } for message in messages]
         return jason
 
-    def get_users_by_chat_id(self, user_id):
-        users = Users.query.join(UserChatAssociation, Users.id == UserChatAssociation.user_id)\
-                       .filter(UserChatAssociation.chat_id == chat_id)\
-                       .all()
+    def get_users_by_chat_id(self, chat_id):
+        users = Users.query.join(UserChatAssociation).filter(UserChatAssociation.chat_id == chat_id).all()
         jason = [{
             'id': user.id
         } for user in users] 

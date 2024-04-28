@@ -120,10 +120,12 @@ def login():
         cursor = conn.cursor()
         cursor.execute("SELECT uuid FROM users WHERE name = %s AND pass = %s AND number = %s", (username, password, number))
         user = cursor.fetchone()
+        print("user: {}".format(user))
         if user:
             uuid = user
             session['uuid'] = uuid[0]
             print(uuid[0])
+            print("session: {}".format(uuid[0]))
             return redirect('http://localhost:8001/poisk')
         else:
             return 'Invalid username or password'

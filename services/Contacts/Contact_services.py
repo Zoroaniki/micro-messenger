@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for, make_respo
 import pymysql
 import os
 from dotenv import load_dotenv, dotenv_values
+import requests
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'
@@ -132,7 +133,17 @@ def ilya(id: int):
     user = cursor.fetchone()
     return user["name_friends"]
 
+def create_chat(partisipants: [], name: "str"):
+    requests_data = ""
+    for partisipant in partisipants:
+        request_data += "user=" + str(partisipant) + "&"
+    requests_data += "name={}".format(name)
+    requests.post("http://0.0.0.0:8000/create_chat?{}".format(request_data))
 
+
+def request_uuid(user_id: int):
+    response = requests.get("http://0.0.0.0:8002/user/{}/uuid".format(user_id))
+    return response.text
 if __name__ == "__main__":
     create_table_if_not_exists()
-    app.run(debug=True, host="127.0.0.1", port=8001)
+    app.run(debug=True, host="0.0.0.0", port=8001)
