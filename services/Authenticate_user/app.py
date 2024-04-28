@@ -4,10 +4,19 @@ import mysql.connector
 import requests
 from uuid import uuid4
 import json
+import os
+from dotenv import load_dotenv, dotenv_values
+
 
 app = Flask(__name__, template_folder='Templates')
 app.secret_key = 'your_secret_key'
 user_uuid = str(uuid4())
+load_dotenv()
+
+user = os.getenv("BD_USER_NAME")
+password = os.getenv("BD_PASSWORD")
+bd_name = os.getenv("BD_NAME")
+
 '''
 response = requests.get("http://127.0.0.1:8001/poisk", headers={'X-User-UUID': user_uuid})
 '''
@@ -18,9 +27,9 @@ def get_db():
     try:
         connection = mysql.connector.connect(host='localhost',
                                              port='3306',
-                                             database='users',
-                                             user='root',
-                                             password='250702')
+                                             database=bd_name,
+                                             user=user,
+                                             password=password)
 
         if connection.is_connected():
             db_Info = connection.get_server_info()
@@ -158,4 +167,4 @@ def register():
 
 if __name__ == '__main__':
     create_table_if_not_exists()
-    app.run(debug=True, host="192.168.0.141")
+    app.run(debug=True, host="0.0.0.0", port = 8002)
