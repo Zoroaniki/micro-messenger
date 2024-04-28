@@ -16,6 +16,7 @@ app = Flask(__name__, template_folder='templates')
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://{}:{}@localhost/{}?charset=utf8mb4&collation=utf8mb4_general_ci'.format(user, password, bd_name)
 db.init_app(app)
 app.register_blueprint(urls_blueprint, url_prefix='/api')
+app.secret_key = 'your_secret_key'
 
 with app.app_context():
     db.create_all()

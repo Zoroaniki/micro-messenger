@@ -3,6 +3,8 @@ import pymysql
 import os
 from dotenv import load_dotenv, dotenv_values
 import requests
+import json
+import sys
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'
@@ -99,46 +101,81 @@ def index():
 
 @app.route('/friends', methods=['GET', 'POST'])
 def friends():
+    uuid = session.get('uuid')
+    print(uuid)
     if request.method == 'POST':
-        user_id = request.form.get('id')
+        users_id = request.form.get('id')
+        print(users_id)
         connection = get_bd_conectin()
         cursor = connection.cursor()
-        cursor.execute(
-            "INSERT INTO friends (id_friends, name_friends, number_friends) SELECT id, name, number FROM users WHERE id = %s;",
-            (user_id,))
+        #cursor.execute("INSERT INTO friends (id_friends, name_friends, number_friends) SELECT id, name, number FROM users WHERE id = %s;",(users_id,))
+        cursor.execute("SELECT id from users WHERE id = %s", (users_id))
+        save_id_f = cursor.fetchall()
+        save_id_f_value = save_id_f[0]['id']
+        cursor.execute("INSERT INTO users_friends (user_id, friends_id) VALUES (%s, %s)", (uuid, save_id_f_value))
         connection.commit()
         return redirect(url_for('friends'))
     connection = get_bd_conectin()
     cursor = connection.cursor()
-    cursor.execute("SELECT * FROM friends")
+    cursor.execute("SELECT name, id FROM users WHERE id IN (SELECT friends_id FROM users_friends WHERE user_id = %s)", (uuid,))
     friends = cursor.fetchall()
-    return render_template('friends.html', friends=friends)
+    print("friends: {}".format(friends), file=sys.stderr)
+    print(get_current_user_id(), file=sys.stderr)
+    chats = request_chat(get_current_user_id())
+    print(type(chats), file=sys.stderr)
+    print(chats, file=sys.stderr)
+    print("json {}".format(json.loads(chats)), file=sys.stderr)
+
+    
+    return render_template('friends.html', friends=friends, chats=json.loads(chats))
 
 
-@app.route('/chat', methods=['GET', 'POST'])
-def chatuser():
-    conn = get_bd_conectin()
-    cursor = conn.cursor()
-    cursor.execute("SELECT * FROM friends")
-    friends = cursor.fetchall()
-    return render_template('chat.html', friends=friends)
+#@app.route('/chat', methods=['GET', 'POST'])
+#def chatuser():
+    #conn = get_bd_conectin()
+    #cursor = conn.cursor()
+    # cursor.execute("SELECT * FROM friends")
+    #friends = cursor.fetchall()
+#    return render_template('chat.html', friends=friends)
+
+def get_current_user_id():
+    connection = get_bd_conectin()
+    cursor = connection.cursor()
+    uuid = session.get('uuid')
+    print("uuid: {}".format(uuid), sys.stderr)
+    cursor.execute("SELECT users.id FROM users WHERE uuid = %s", (uuid,))
+    user = cursor.fetchall()
+    print(user, file=sys.stderr)
+    return user[0]["id"]
 
 
-
-@app.route('/users/<id>', methods=['GET', 'POST'])
+@app.route('/users/<int:id>', methods=['POST', 'GET'])
 def ilya(id: int):
-    conn = get_bd_conectin()
-    cursor = conn.cursor()
-    cursor.execute("SELECT * FROM friends WHERE id_friends = {}".format(id))
-    user = cursor.fetchone()
-    return user["name_friends"]
+    partisipants = []
+    partisipants.append(id)
+    partisipants.append(get_current_user_id())
+    print(id, file=sys.stderr)
+    create_chat(partisipants, "test")
+    return redirect('http://0.0.0.0:8001/friends')
 
-def create_chat(partisipants: [], name: "str"):
-    requests_data = ""
+@app.route('/chat/<int:id>', methods=['GET', 'POST'])
+def go_to_chat(id: int):
+    print("Chat_id: {}".format(id), file=sys.stderr)
+    session['uuid'] = session.get('uuid')
+    return redirect("http://0.0.0.0:8000/api/{}".format(id))
+
+def request_chat(user_id: int):
+    response = requests.get("http://0.0.0.0:8000/api/get_chats/{}".format(user_id))
+    return response.text
+
+def create_chat(partisipants: [], name: str):
+    request_data = ""
+    print(partisipants, file=sys.stderr)
     for partisipant in partisipants:
         request_data += "user=" + str(partisipant) + "&"
-    requests_data += "name={}".format(name)
-    requests.post("http://0.0.0.0:8000/create_chat?{}".format(request_data))
+    request_data += "name={}".format(name)
+    print(request_data, file=sys.stderr)
+    requests.post("http://0.0.0.0:8000/api/create_chat?{}".format(request_data))
 
 
 def request_uuid(user_id: int):

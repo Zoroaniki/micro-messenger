@@ -6,6 +6,7 @@ from models.message import Message, MessageStatus
 from db.messages_schema import MessageTable
 from requests_dir.requester import request_uuid
 import datetime
+import sys
 
 urls_blueprint = Blueprint('chat', __name__,)
 
@@ -15,7 +16,7 @@ chat_repo = ChatRepo()
 def get_messages(id: int):
 
     auth = session.get('uuid')
-    print("XDDDD: {}".format(id))
+    print("XDDDD: {}".format(auth), file=sys.stderr)
     users = chat_repo.get_users_by_chat_id(int(id))
     current_user = -1
     for user in users:

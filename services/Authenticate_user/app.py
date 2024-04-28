@@ -6,6 +6,7 @@ from uuid import uuid4
 import json
 import os
 from dotenv import load_dotenv, dotenv_values
+import sys
 
 
 app = Flask(__name__, template_folder='Templates')
@@ -124,8 +125,7 @@ def login():
         if user:
             uuid = user
             session['uuid'] = uuid[0]
-            print(uuid[0])
-            print("session: {}".format(uuid[0]))
+            print("test_session: {}".format(session.get("uuid")), file=sys.stderr)
             return redirect('http://localhost:8001/poisk')
         else:
             return 'Invalid username or password'
