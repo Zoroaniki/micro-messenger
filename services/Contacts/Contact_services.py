@@ -82,18 +82,21 @@ def index():
 
 @app.route('/friends', methods=['GET', 'POST'])
 def friends():
+    uuid = session.get('uuid')
     if request.method == 'POST':
-        user_id = request.form.get('id')
+        users_id = request.form.get('id')
         connection = get_bd_conectin()
         cursor = connection.cursor()
-        cursor.execute(
-            "INSERT INTO friends (id_friends, name_friends, number_friends) SELECT id, name, number FROM users WHERE id = %s;",
-            (user_id,))
+        #cursor.execute("INSERT INTO friends (id_friends, name_friends, number_friends) SELECT id, name, number FROM users WHERE id = %s;",(users_id,))
+        cursor.execute("SELECT id from users WHERE id = %s", (users_id))
+        save_id_f = cursor.fetchall()
+        save_id_f_value = save_id_f[0]['id']
+        cursor.execute("INSERT INTO users_friends (user_id, friends_id) VALUES (%s, %s)", (uuid, save_id_f_value))
         connection.commit()
         return redirect(url_for('friends'))
     connection = get_bd_conectin()
     cursor = connection.cursor()
-    cursor.execute("SELECT * FROM friends")
+    cursor.execute("SELECT name FROM users WHERE id IN (SELECT friends_id FROM users_friends WHERE user_id = %s)", (uuid,))
     friends = cursor.fetchall()
     return render_template('friends.html', friends=friends)
 

@@ -54,7 +54,7 @@ def login():
         user = cursor.fetchone()
         if user:
             uuid = user
-            session['uuid'] = uuid
+            session['uuid'] = uuid[0]
             return redirect('http://localhost:8001/poisk')
         else:
             return 'Invalid username or password'

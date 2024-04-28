@@ -77,8 +77,8 @@
     <ul>
         {% for friend in friends %}
         <li>
-            <p>{{ friend.name_friends }}</p>
-            <a href="{{ url_for('ilya', id=friend.id_friends) }}">Перейти к чату</a>
+            <p>{{ friend.name }}</p>
+            <a href="{{ url_for('ilya', id=friend.name) }}">Перейти к чату</a>
         </li>
         {% endfor %}
          <a href="chat" class="contacts-button">Перейти к контактам</a>
