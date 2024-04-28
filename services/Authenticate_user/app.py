@@ -7,6 +7,10 @@ import json
 
 app = Flask(__name__, template_folder='Templates')
 app.secret_key = 'your_secret_key'
+user_uuid = str(uuid4())
+'''
+response = requests.get("http://127.0.0.1:8001/poisk", headers={'X-User-UUID': user_uuid})
+'''
 
 
 # Настройка подключения к базе данных
@@ -16,7 +20,8 @@ def get_db():
                                              port='3306',
                                              database='users',
                                              user='root',
-                                             password='AFDG56478')
+                                             password='250702')
+
         if connection.is_connected():
             db_Info = connection.get_server_info()
             print("Подключено к серверу MySQL версии", db_Info)
@@ -28,13 +33,67 @@ def get_db():
 
     except Exception as ex:
         print("Ошибка при подключении к MySQL")
-    '''
-    finally:
-        if connection.is_connected():
-            cursor.close()
-            connection.close()
-            print("Соединение с MySQL закрыто")
-    '''
+
+
+def create_table_if_not_exists():
+    conn = get_db()
+    cursor = conn.cursor()
+    cursor.execute("SHOW TABLES LIKE 'users'")
+    if cursor.fetchone() is None:
+        cursor.execute("""
+            CREATE TABLE users (
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                name VARCHAR(255),
+                pass VARCHAR(255),
+                number VARCHAR(255),
+                uuid VARCHAR(255)
+            )
+        """)
+        print("Таблица users создана")
+    else:
+        print("Таблица users уже существует")
+
+
+
+'''
+@app.route('/poisk')
+def poisk():
+    return render_template('poisk.html')
+'''
+
+'''
+# Либо этот метод передачи uuid
+@app.route('/poisk/<int:user_id>/uuid')
+def get_user_uuid(user_id):
+    conn = get_db()
+    cursor = conn.cursor()
+    cursor.execute("SELECT uuid FROM users WHERE id = %s", (user_id,))
+    user = cursor.fetchone()
+    print(user)
+    if user:
+        return jsonify({'uuid': user[0]})
+    else:
+        return jsonify({'error': 'User not found'}), 404
+
+
+# Либо этот метод передачи uuid
+@app.route('/poisk', methods=['GET'])
+def poisk():
+    conn = get_db()
+    cursor = conn.cursor()
+    cursor.execute("SELECT uuid FROM users WHERE id = %s", (user_id,))
+    user = cursor.fetchone()
+    print(user)
+    user_uuid = request.headers.get('X-User-UUID')
+    if user_uuid:
+        # Используйте user_uuid как вам нужно
+        print(f"Получен UUID: {user_uuid}")
+        # Здесь может быть ваш код для обработки UUID
+        return jsonify({'message': 'UUID получен'})
+    else:
+        return jsonify({'error': 'UUID не предоставлен'}), 400
+'''
+
 
 
 @app.route('/success')
@@ -54,7 +113,8 @@ def login():
         user = cursor.fetchone()
         if user:
             uuid = user
-            session['uuid'] = uuid
+            session['uuid'] = uuid[0]
+            print(uuid[0])
             return redirect('http://localhost:8001/poisk')
         else:
             return 'Invalid username or password'
@@ -89,14 +149,13 @@ def register():
         number = request.form['number']
         conn = get_db()
         cursor = conn.cursor()
-        cursor.execute("INSERT INTO users (name, pass, number, uuid) VALUES (%s, %s, %s, %s)", (username, password, number, str(uuid4())))
+        cursor.execute("INSERT INTO users (name, pass, number, uuid) VALUES (%s, %s, %s, %s)",
+                       (username, password, number, str(uuid4())))
         conn.commit()
         return redirect(url_for('login'))
     return render_template('register.html')
 
 
 if __name__ == '__main__':
-    app.run(debug=True, host="0.0.0.0", port=8002)
-
-
-
+    create_table_if_not_exists()
+    app.run(debug=True, host="192.168.0.141")

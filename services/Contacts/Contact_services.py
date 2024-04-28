@@ -14,6 +14,7 @@ print(user)
 print(password)
 print(bd_name)
 
+
 def get_bd_conectin():
     try:
         connection = pymysql.connect(
@@ -24,7 +25,29 @@ def get_bd_conectin():
             database=bd_name,
             cursorclass=pymysql.cursors.DictCursor,
         )
+    except Exception as ex:
+        print("Connection refuse")
+        print(ex)
+    return connection
 
+def get_db():
+    pass
+
+
+def create_table_if_not_exists():
+    connection = get_bd_conectin()
+    cursor = connection.cursor()
+    cursor.execute("SHOW TABLES LIKE 'users_friends'")
+    if cursor.fetchone() is None:
+        cursor.execute("""
+            CREATE TABLE users_friends (
+                friends_id INT,
+                user_id varchar(255)
+            )
+        """)
+        print("Таблица users создана")
+    else:
+        print("Таблица users уже существует")
         '''
         try:
 
@@ -54,23 +77,16 @@ def get_bd_conectin():
 
             connection.close()
             print("successfully connection")
-        '''
+        
         return connection
-
-
-
-    except Exception as ex:
-        print("Connection refuse")
-        print(ex)
-
-
-
+'''
 
 
 @app.route("/poisk")
 def index():
     connection = get_bd_conectin()
     uuid = session.get('uuid')
+    print(uuid)
     if uuid:
         with connection.cursor() as cursor:
             cursor.execute("SELECT * FROM users WHERE uuid != %s", (uuid,))
@@ -118,4 +134,5 @@ def ilya(id: int):
 
 
 if __name__ == "__main__":
-    app.run(debug=True, host="0.0.0.0", port=8001)
+    create_table_if_not_exists()
+    app.run(debug=True, host="127.0.0.1", port=8001)

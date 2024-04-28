@@ -2,7 +2,6 @@
 from flask import render_template, Flask, redirect, url_for, request
 from uuid import UUID, uuid4
 from models.message import Message
-from fastapi import FastAPI
 from endpoints.chat_router import urls_blueprint
 from db.database import db
 from dotenv import load_dotenv, dotenv_values
