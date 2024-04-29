@@ -187,7 +187,7 @@ def create_chat(partisipants: [], name: str):
         request_data += "user=" + str(partisipant) + "&"
     request_data += "name={}".format(name)
     print(request_data, file=sys.stderr)
-    requests.post("{}:8000/api/create_chat?{}".format(request_data))
+    requests.post("{}:8000/api/create_chat?{}".format(redirect_address, request_data))
 
 
 def request_uuid(user_id: int):
