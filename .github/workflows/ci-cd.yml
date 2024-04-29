@@ -17,7 +17,7 @@ jobs:
 
       - name: Build docker image
         run: |
-          docker build -f ./services/chat_service/Dockerfile ./services/chat_service --tag chat_service:latest
+          docker compose up --build --tag micro-messnger:latest
       - name: Log in to DockerHub
         uses: docker/login-action@v3.0.0
         with:
@@ -26,5 +26,5 @@ jobs:
 
       - name: Push tag to DockerHub
         run: |
-          docker push ${{ secrets.DOCKER_USERNAME }}/chat_service:latest
+          docker push ${{ secrets.DOCKER_USERNAME }}/micro_messenger:latest
     
