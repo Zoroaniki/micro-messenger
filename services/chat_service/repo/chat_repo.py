@@ -31,6 +31,9 @@ class ChatRepo():
     def create_chat(self, chat_name: str, partisipants: [] = [0]):
         print(partisipants)
         print(chat_name)
+        if chat_name == "":
+            for user in partisipants:
+                chat_name += request_name(user)
         chat = ChatTable(name=chat_name)
         db.session.add(chat)
         print(chat.name)

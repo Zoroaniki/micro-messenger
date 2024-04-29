@@ -78,14 +78,14 @@
         {% for friend in friends %}
         <li>
             <p>{{ friend.name }}</p>
-            <a href="{{ url_for('ilya', id=friend.id) }}">Перейти к чату</a>
+            <a href="{{ url_for('ilya', id=friend.id) }}">Создать чат</a>
         </li>
         {% endfor %}
         <h1>Chats</h1>
         
         {% for chat in chats %}
         <li>
-            <p>{{ chat.id }}</p>
+            <p>{{ chat.name }}</p>
             <a href="{{ url_for('go_to_chat', id=chat.id) }}">Перейти к чату</a>
         </li>
         {% endfor %}

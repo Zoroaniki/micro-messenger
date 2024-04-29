@@ -7,9 +7,14 @@ from db.messages_schema import MessageTable
 from requests_dir.requester import request_uuid
 import datetime
 import sys
+import os
+from dotenv import load_dotenv, dotenv_values
+import json
 
+load_dotenv()
 urls_blueprint = Blueprint('chat', __name__,)
 
+redirect_address = os.getenv("REDIRECT_ADDRESS")
 chat_repo = ChatRepo()
 
 @urls_blueprint.route('/<id>', methods=['POST', 'GET'])
@@ -18,9 +23,13 @@ def get_messages(id: int):
     auth = session.get('uuid')
     print("XDDDD: {}".format(auth), file=sys.stderr)
     users = chat_repo.get_users_by_chat_id(int(id))
+    print(users, file=sys.stderr)
     current_user = -1
     for user in users:
-        if auth == request_uuid(user):
+        print("XDDDD2: {}".format(request_uuid(user["id"])), file=sys.stderr)
+        request_result_dict = json.loads(request_uuid(user["id"]))
+        print("XDDDD3: {}".format(request_result_dict), file=sys.stderr)
+        if auth == request_result_dict["uuid"]:
             current_user = user
             break
 
@@ -29,7 +38,8 @@ def get_messages(id: int):
 
     if request.method == 'POST':
         message = request.form['message']
-        message_table = MessageTable( message_body=message, sender_id=current_user, chat_id=id, message_status=MessageStatus.SENT, send_time=datetime.datetime.now())
+        message_table = MessageTable( message_body=message, sender_id=current_user["id"], chat_id=id, message_status=MessageStatus.SENT, send_time=datetime.datetime.now())
+        print("message_table: {}".format(message_table), file=sys.stderr)
         chat_repo.send_message(message_table)
         return chat_repo.get_all_messages(id)
     else:
@@ -54,7 +64,7 @@ def get_chats_by_id_user_id(user_id: int):
 
 @urls_blueprint.route('/back_to_friends')
 def go_back_from_chat():
-    return redirect("http://62.217.187.32:8001/poisk", code=301)
+    return redirect("{}:8001/friends".format(redirect_address), code=301)
 
 @urls_blueprint.route('/{id}/read')
 def read_message(id: int):

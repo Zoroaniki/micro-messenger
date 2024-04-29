@@ -1,5 +1,6 @@
 #from services.chat_service.chat_service import ChatService
 from flask import render_template, Flask, redirect, url_for, request
+from flask_cors import CORS
 from uuid import UUID, uuid4
 from models.message import Message
 from endpoints.chat_router import urls_blueprint
@@ -11,12 +12,13 @@ load_dotenv()
 
 user = os.getenv("BD_USER_NAME")
 password = os.getenv("BD_PASSWORD")
-bd_name = os.getenv("BD_NAME")
+bd_name = os.getenv("CHAT_DB_NAME")
 app = Flask(__name__, template_folder='templates')
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://{}:{}@localhost/{}?charset=utf8mb4&collation=utf8mb4_general_ci'.format(user, password, bd_name)
 db.init_app(app)
 app.register_blueprint(urls_blueprint, url_prefix='/api')
 app.secret_key = 'your_secret_key'
+CORS(app, supports_credentials=True)
 
 with app.app_context():
     db.create_all()

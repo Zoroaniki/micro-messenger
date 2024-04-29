@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for, session, jsonify,make_response
+from flask_cors import CORS
 import pymysql
 import mysql.connector
 import requests
@@ -11,12 +12,14 @@ import sys
 
 app = Flask(__name__, template_folder='Templates')
 app.secret_key = 'your_secret_key'
+CORS(app, supports_credentials=True)
 user_uuid = str(uuid4())
 load_dotenv()
 
 user = os.getenv("BD_USER_NAME")
 password = os.getenv("BD_PASSWORD")
 bd_name = os.getenv("BD_NAME")
+redirect_address = os.getenv("REDIRECT_ADDRESS")
 
 '''
 response = requests.get("http://127.0.0.1:8001/poisk", headers={'X-User-UUID': user_uuid})
@@ -72,18 +75,6 @@ def poisk():
 '''
 
 '''
-# Либо этот метод передачи uuid
-@app.route('/poisk/<int:user_id>/uuid')
-def get_user_uuid(user_id):
-    conn = get_db()
-    cursor = conn.cursor()
-    cursor.execute("SELECT uuid FROM users WHERE id = %s", (user_id,))
-    user = cursor.fetchone()
-    print(user)
-    if user:
-        return jsonify({'uuid': user[0]})
-    else:
-        return jsonify({'error': 'User not found'}), 404
 
 
 # Либо этот метод передачи uuid
@@ -104,6 +95,18 @@ def poisk():
         return jsonify({'error': 'UUID не предоставлен'}), 400
 '''
 
+# Либо этот метод передачи uuid
+@app.route('/user/<int:user_id>/uuid')
+def get_user_uuid(user_id):
+    conn = get_db()
+    cursor = conn.cursor()
+    cursor.execute("SELECT uuid FROM users WHERE id = %s", (user_id,))
+    user = cursor.fetchone()
+    print(user)
+    if user:
+        return jsonify({'uuid': user[0]})
+    else:
+        return jsonify({'error': 'User not found'}), 404
 
 
 @app.route('/success')
@@ -126,7 +129,7 @@ def login():
             uuid = user
             session['uuid'] = uuid[0]
             print("test_session: {}".format(session.get("uuid")), file=sys.stderr)
-            return redirect('http://localhost:8001/poisk')
+            return redirect('{}:8001/friends'.format(redirect_address))
         else:
             return 'Invalid username or password'
     return render_template('login.html')
@@ -144,7 +147,7 @@ def ilya(id: int):
 
 
 def send_request(url="http://127.0.0.1:5000/poisk"):
-    response = requests.get(url="0.0.0.0:8001/poisk")
+    response = requests.get(url="{}:8001/friends".format(redirect_address))
     print(response)
     if response.status_code == 200:
         return response.json()

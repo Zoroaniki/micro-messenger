@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for, make_response, session
+from flask_cors import CORS
 import pymysql
 import os
 from dotenv import load_dotenv, dotenv_values
@@ -8,11 +9,13 @@ import sys
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'
+CORS(app, supports_credentials=True)
 load_dotenv()
 
 user = os.getenv("BD_USER_NAME")
 password = os.getenv("BD_PASSWORD")
 bd_name = os.getenv("BD_NAME")
+redirect_address = os.getenv("REDIRECT_ADDRESS")
 print(user)
 print(password)
 print(bd_name)
@@ -148,8 +151,17 @@ def get_current_user_id():
     print(user, file=sys.stderr)
     return user[0]["id"]
 
+@app.route('/users/<int:id>')
+def give_user_name(id: int):
+    connection = get_bd_conectin()
+    cursor = connection.cursor()
+    cursor.execute("SELECT users.name FROM users WHERE id = %s", (id,))
+    user = cursor.fetchall()
+    print("user: {}".format(user), file=sys.stderr)
+    return user[0]["name"]
 
-@app.route('/users/<int:id>', methods=['POST', 'GET'])
+
+@app.route('/test/<int:id>', methods=['POST', 'GET'])
 def ilya(id: int):
     partisipants = []
     partisipants.append(id)
@@ -162,10 +174,10 @@ def ilya(id: int):
 def go_to_chat(id: int):
     print("Chat_id: {}".format(id), file=sys.stderr)
     session['uuid'] = session.get('uuid')
-    return redirect("http://0.0.0.0:8000/api/{}".format(id))
+    return redirect("{}:8000/api/{}".format(redirect_address, id))
 
 def request_chat(user_id: int):
-    response = requests.get("http://0.0.0.0:8000/api/get_chats/{}".format(user_id))
+    response = requests.get("{}:8000/api/get_chats/{}".format(redirect_address, user_id))
     return response.text
 
 def create_chat(partisipants: [], name: str):
@@ -175,11 +187,11 @@ def create_chat(partisipants: [], name: str):
         request_data += "user=" + str(partisipant) + "&"
     request_data += "name={}".format(name)
     print(request_data, file=sys.stderr)
-    requests.post("http://0.0.0.0:8000/api/create_chat?{}".format(request_data))
+    requests.post("{}:8000/api/create_chat?{}".format(request_data))
 
 
 def request_uuid(user_id: int):
-    response = requests.get("http://0.0.0.0:8002/user/{}/uuid".format(user_id))
+    response = requests.get("{}:8002/user/{}/uuid".format(redirect_address, user_id))
     return response.text
 if __name__ == "__main__":
     create_table_if_not_exists()

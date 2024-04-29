@@ -8,3 +8,4 @@ Flask-SQLAlchemy
 mysql-connector-python
 python-dotenv
 requests
+flask-cors

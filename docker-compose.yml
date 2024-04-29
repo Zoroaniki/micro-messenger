@@ -8,6 +8,8 @@ services:
   # Даём доступ к 80 порту внутри контейнера через 8000 на машине
     ports:
       - 8000:8000
+    env_file:
+      - ./.env
     # Передаём переменные окружения, которые будут использованы приложением
 
   contacts:
@@ -15,10 +17,14 @@ services:
     network_mode: host
     ports: 
       - 8001:8001
+    env_file:
+      - ./.env
 
   registration:
     build: services/Authenticate_user
     network_mode: host
     ports: 
       - 8002:8002
+    env_file:
+      - ./.env
 # Перед запуском этого сервиса ждём пока запустится БД

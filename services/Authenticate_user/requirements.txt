@@ -28,3 +28,4 @@ Werkzeug==3.0.2
 zipp==3.18.1
 python-dotenv==1.0.1
 flask-login==0.6.3
+flask-cors
