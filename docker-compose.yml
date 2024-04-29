@@ -4,7 +4,7 @@ services:
   chat_service:
 # Путь до Dockerfile сервиса
     build: services/chat_service
-    container_name: chat_service
+    container_name: ilfidev/chat_service
     image: chat_service:latest
     network_mode: host
   # Даём доступ к 80 порту внутри контейнера через 8000 на машине
@@ -16,7 +16,7 @@ services:
 
   contacts:
     build: services/Contacts
-    container_name: contacts_service
+    container_name: ilfidev/contacts_service
     image: contacts_service:latest
     network_mode: host
     ports: 
@@ -26,7 +26,7 @@ services:
 
   registration:
     build: services/Authenticate_user
-    container_name: registration_service
+    container_name: ilfidev/registration_service
     image: registration_service:latest
     network_mode: host
     ports: 
