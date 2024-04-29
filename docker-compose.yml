@@ -4,6 +4,8 @@ services:
   chat_service:
 # Путь до Dockerfile сервиса
     build: services/chat_service
+    container_name: chat_service
+    image: chat_service:latest
     network_mode: host
   # Даём доступ к 80 порту внутри контейнера через 8000 на машине
     ports:
@@ -14,6 +16,8 @@ services:
 
   contacts:
     build: services/Contacts
+    container_name: contacts_service
+    image: contacts_service:latest
     network_mode: host
     ports: 
       - 8001:8001
@@ -22,6 +26,8 @@ services:
 
   registration:
     build: services/Authenticate_user
+    container_name: registration_service
+    image: registration_service:latest
     network_mode: host
     ports: 
       - 8002:8002
