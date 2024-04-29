@@ -89,7 +89,7 @@
             <a href="{{ url_for('go_to_chat', id=chat.id) }}">Перейти к чату</a>
         </li>
         {% endfor %}
-         <a href="chat" class="contacts-button">Перейти к контактам</a>
+        <a href="{{ url_for('find_users') }}" class="contacts-button">Поиск</a>
     </ul>
 </body>
 </html>

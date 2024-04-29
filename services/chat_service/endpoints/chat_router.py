@@ -64,6 +64,7 @@ def get_chats_by_id_user_id(user_id: int):
 
 @urls_blueprint.route('/back_to_friends')
 def go_back_from_chat():
+    print("redirect:{}".format(redirect_address), file=sys.stderr)
     return redirect("{}:8001/friends".format(redirect_address), code=301)
 
 @urls_blueprint.route('/{id}/read')

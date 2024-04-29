@@ -101,6 +101,13 @@ def index():
     else:
         return 'UUID not found in session'
 
+@app.route("/to_poisk")
+def find_users():
+    return redirect("{}:8001/poisk".format(redirect_address))
+
+@app.route("/to_friend")
+def to_friends():
+    return redirect("{}:8001/friends".format(redirect_address))
 
 @app.route('/friends', methods=['GET', 'POST'])
 def friends():
