@@ -167,8 +167,8 @@ def ilya(id: int):
     partisipants.append(id)
     partisipants.append(get_current_user_id())
     print(id, file=sys.stderr)
-    create_chat(partisipants, "test")
-    return redirect('http://0.0.0.0:8001/friends')
+    create_chat(partisipants, "")
+    return redirect('{}:8001/friends'.format(redirect_address))
 
 @app.route('/chat/<int:id>', methods=['GET', 'POST'])
 def go_to_chat(id: int):
