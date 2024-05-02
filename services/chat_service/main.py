@@ -8,6 +8,7 @@ from db.database import db
 from dotenv import load_dotenv, dotenv_values
 import os
 
+
 load_dotenv()
 
 user = os.getenv("BD_USER_NAME")
