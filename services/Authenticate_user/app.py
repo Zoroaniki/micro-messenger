@@ -8,6 +8,7 @@ import json
 import os
 from dotenv import load_dotenv, dotenv_values
 import sys
+import keycloak
 
 
 app = Flask(__name__, template_folder='Templates')
