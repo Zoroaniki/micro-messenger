@@ -33,7 +33,7 @@ def get_messages(id: int):
             current_user = user
             break
 
-    if current_user == -1:
+    if current_user == -1 and id != 0:
         raise HTTPException(403, f'#Нет доступа к этому чату!')
 
     if request.method == 'POST':
