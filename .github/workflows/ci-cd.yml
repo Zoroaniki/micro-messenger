@@ -39,7 +39,7 @@ jobs:
 
       - name: Build docker image
         run: |
-          docker build  -f ./services/chat_service/Dockerfile . --tag cr.yandex/${{ secrets.YC_REGISTRY_ID }}/chat-service:latest
+          docker build  -f ./services/chat_service/Dockerfile ./services/chat_service/ --tag cr.yandex/${{ secrets.YC_REGISTRY_ID }}/chat-service:latest
 
       - name: Login to YC Registry
         uses: docker/login-action@v3.0.0
