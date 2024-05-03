@@ -33,12 +33,17 @@ def get_messages(id: int):
             current_user = user
             break
 
-    if current_user == -1 and id != 0:
+    if current_user == -1 and int(id) != 0:
         raise HTTPException(403, f'#Нет доступа к этому чату!')
 
     if request.method == 'POST':
         message = request.form['message']
-        message_table = MessageTable( message_body=message, sender_id=current_user["id"], chat_id=id, message_status=MessageStatus.SENT, send_time=datetime.datetime.now())
+        if current_user == -1:
+            current_user = -1
+        else:
+            current_user = current_user["id"]
+
+        message_table = MessageTable( message_body=message, sender_id=current_user, chat_id=id, message_status=MessageStatus.SENT, send_time=datetime.datetime.now())
         print("message_table: {}".format(message_table), file=sys.stderr)
         chat_repo.send_message(message_table)
         return chat_repo.get_all_messages(id)
