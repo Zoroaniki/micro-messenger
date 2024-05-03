@@ -3,6 +3,8 @@ FROM python:3.9
 
 WORKDIR /code
 
+EXPOSE 8080
+
 
 COPY requirements.txt .
 
