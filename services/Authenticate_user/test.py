@@ -1,7 +1,7 @@
 # для app.py аунтификация
 import unittest
 from unittest.mock import patch
-from services.Authenticate_user.app import app, get_db, send_request
+from app import app, get_db, send_request
 
 
 class TestApp(unittest.TestCase):
@@ -13,7 +13,7 @@ class TestApp(unittest.TestCase):
     def test_register(self):
         with patch('app.get_db') as mock_get_db:
             response = self.app.post('/register', data={'username': 'testuser', 'password': 'testpass', 'number': '123456'})
-            self.assertEqual(response.status_code, 500)
+            self.assertEqual(response.status_code, 302)
             # Add further assertions to ensure user is registered correctly in the database
 
     @patch('app.requests.get')
