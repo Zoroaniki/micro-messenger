@@ -29,7 +29,7 @@ response = requests.get("http://127.0.0.1:8001/poisk", headers={'X-User-UUID': u
 # Настройка подключения к базе данных
 def get_db():
     try:
-        connection = mysql.connector.connect(host='localhost',
+        connection = mysql.connector.connect(host='62.217.187.32',
                                              port='3306',
                                              database=bd_name,
                                              user=user,

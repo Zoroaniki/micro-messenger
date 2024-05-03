@@ -24,7 +24,7 @@ print(bd_name)
 def get_bd_conectin():
     try:
         connection = pymysql.connect(
-            host="localhost",
+            host="62.217.187.32",
             port=3306,
             user=user,
             password=password,
