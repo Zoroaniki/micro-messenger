@@ -155,6 +155,9 @@ def get_current_user_id():
     print("uuid: {}".format(uuid), sys.stderr)
     cursor.execute("SELECT users.id FROM users WHERE uuid = %s", (uuid,))
     user = cursor.fetchall()
+    cursor.execute("SELECT * FROM users")
+    cursortest = cursor.fetchall()
+    print("aaaaa: {}".format(cursortest), sys.stderr)
     print(user, file=sys.stderr)
     return user[0]["id"]
 
