@@ -31,9 +31,9 @@ def get_db():
     try:
         connection = mysql.connector.connect(host='62.217.187.32',
                                              port='3306',
-                                             database=bd_name,
-                                             user=user,
-                                             password=password)
+                                             database="users",
+                                             user="ilfi",
+                                             password="password")
 
         if connection.is_connected():
             db_Info = connection.get_server_info()
