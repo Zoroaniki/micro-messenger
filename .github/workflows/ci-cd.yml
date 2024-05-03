@@ -25,8 +25,8 @@ jobs:
           pip install -r ./services/Contacts/requirements.txt
       - name: Run unit tests
         run: |
-          unittest ./services/Authenticate_user/test.py
-          pytest ./services/Contacts/text.py
+          python -m unittest ./services/Authenticate_user/test.py
+          python -m pytest ./services/Contacts/text.py
 
  build-and-push:
     runs-on: ubuntu-latest
