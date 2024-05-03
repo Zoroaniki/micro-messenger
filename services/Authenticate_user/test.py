@@ -1,7 +1,7 @@
 # для app.py аунтификация
 import unittest
 from unittest.mock import patch
-from app import app, get_db, send_request
+from serviecs.Authenticate_user.app import app, get_db, send_request
 
 
 class TestApp(unittest.TestCase):
