@@ -21,7 +21,8 @@ jobs:
         run: |
           sudo apt update
           sudo apt install -y python3-pip
-          pip install -r requirements.txt
+          pip install -r ./services/Authenticate_user/requirements.txt
+          pip install -r ./services/Contacts/requirements.txt
       - name: Run unit tests
         run: |
           unittest ./services/Authenticate_user/test.py
